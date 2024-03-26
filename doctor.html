@@ -1,0 +1,562 @@
+<html lang="en">
+
+<head>
+  <title>王东教授</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/main.css">
+  <!-- Font Awesome File -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+  <div class="container app">
+    <div class="row app-one">
+
+
+      <!-- New Message Sidebar End -->
+
+      <!-- Conversation Start -->
+      <div class="col-sm-12 conversation">
+        <!-- Heading -->
+        <div class="row heading">
+          <div class="col-sm-2 col-md-1 col-xs-3 heading-avatar">
+            <div class="heading-avatar-icon">
+              <img src="img/doctor.jpg">
+            </div>
+          </div>
+        
+          <div class="col-sm-8 col-xs-7 heading-name">
+            <a class="heading-name-meta">王东教授
+            </a>
+            <span style="color:rgb(77, 147, 71); font-weight: bold;">在线</span>
+          </div>
+          <div class="col-sm-1 col-xs-1  heading-dot pull-right">
+            <i class="fa fa-ellipsis-v fa-2x  pull-right" aria-hidden="true"></i>
+          </div>
+        </div>
+        <!-- Heading End -->
+
+        <!-- Message Box -->
+        <div class="row message" id="conversation">
+
+         <!--
+          <div class="row message-body">
+            <div class="col-sm-12 message-main-receiver">
+              <div class="receiver">
+                <div class="message-text">
+                 正在输入...
+                </div>
+                <span class="message-time pull-right">
+                  AI虚拟医学顾问
+                </span>
+              </div>
+            </div>
+          </div>
+            
+          <div class="row message-body">
+            <div class="col-sm-12 message-main-receiver">
+              <div class="receiver">
+                <div class="message-text">
+                 Hyy, Its Awesome..!
+                 <a class="previous" onclick="previous(this)" id="ankitjain28" name="20">
+                  Show Previous Message!
+                  </a>                 
+                </div>
+                <span class="message-time pull-right">
+                  Sun
+                </span>
+              </div>
+            </div>
+          </div>          
+
+          <div class="row message-body">
+            <div class="col-sm-12 message-main-sender">
+              <div class="sender">
+                <div class="message-text">
+                  Thanks n I know its awesome...!
+                </div>
+                <span class="message-time pull-right">
+                  Sun
+                </span>
+              </div>
+            </div>
+          </div>-->
+        </div>
+        <!-- Message Box End -->
+
+        <!-- Reply Box -->
+        <div class="row reply">
+           <!--<div class="col-sm-1 col-xs-1 reply-emojis">
+            <i class="fa fa-smile-o fa-2x"></i>
+          </div>
+          <div class="col-sm-9 col-xs-9 reply-main">
+            <textarea class="form-control" rows="1" id="comment"></textarea>
+          </div>
+          <div class="col-sm-1 col-xs-1 reply-recording">
+            <i class="fa fa-microphone fa-2x" aria-hidden="true"></i>
+          </div>
+          <div class="col-sm-1 col-xs-1 reply-send">
+            <i class="fa fa-send fa-2x" aria-hidden="true"></i>
+          </div>-->
+        </div>
+        <!-- Reply Box End -->
+      </div>
+      <!-- Conversation End -->
+    </div>
+    <!-- App One End -->
+  </div>
+
+  <!-- App End -->
+  <script>
+    const msgdiv = $('<div class="row message-body">'+
+      '<div class="col-sm-12 message-main-receiver">'+
+             '<div class="receiver">'+
+              '<span class="message-time pull-right">'+
+                  '王东教授:'+
+                '</span>'+              
+               '<div class="message-text">'+
+                 '正在输入...'+
+                '</div>'+
+
+              '</div>'+
+            '</div>'+
+          '</div>');
+    const msgdiv2 = $(
+        '<div class="row message-body">'+
+            '<div class="col-sm-12 message-main-sender">'+
+              '<div class="sender">'+
+                '<span class="message-time pull-right">'+
+                  '我:'+
+                '</span>'+                
+                '<div class="message-text">'+
+                  '正在输入...'+
+                '</div>'+
+              '</div>'+
+            '</div>'+
+          '</div>'
+    );
+
+    const enddiv = $(
+      '<div class="row message-previous">'+
+            '<div class="col-sm-12 previous2">'+
+              '<a id="endinfo" name="20" style="cursor: text;">'+
+                ' '+
+              '</a>'+
+            '</div>'+
+          '</div>'
+    );
+
+    const fmsg = [];
+
+    const q0 = "患者您好，您想了解哪方面的信息呢？（您可以通过<b>点击</b>下面您感兴趣的问题向我提问）";
+    const q00 = " <a class=\"previous\" onclick=\"Answer(1)\" name=\"20\"> 院内感染 </a>"+ "&nbsp;&nbsp;" +
+    " <a class=\"previous\" onclick=\"Answer(2)\" name=\"20\"> 医护人员手卫生 </a>";
+
+    const a00 = [
+      "院内感染",
+      "医护人员手卫生",
+      "我对院内感染没有疑问了，我想了解一下医护人员手卫生方面的知识",
+      "我对医护人员的手卫生没有疑问了，我想了解一下院内感染方面的知识"
+    ]; 
+
+    const q1 = "患者您好，您对院内感染有哪些具体的疑问？（您可以通过<b>点击</b>下面您感兴趣的问题向我提问）";
+    const q1b = "您对院内感染有哪些具体的疑问？（您可以通过<b>点击</b>下面您感兴趣的问题向我提问）";
+    const q1a = "您对院内感染还有哪些疑问？（您可以通过<b>点击</b>下面您感兴趣的问题向我提问）";
+    const q10 = [
+      "<a class=\"previous\" onclick=\"Answer(11)\" name=\"20\">什么是院内感染？</a>",
+      "<a class=\"previous\" onclick=\"Answer(12)\" name=\"20\">院内感染会带来哪些风险？</a>",
+      "<a class=\"previous\" onclick=\"Answer(13)\" name=\"20\">我能为预防院内感染做些什么？</a>",
+      "<a class=\"previous\" onclick=\"Answer(20)\" name=\"20\">我对院内感染没有疑问了，我想了解一下医护人员手卫生方面的知识</a>"
+    ];
+    const a10 = [
+      "什么是院内感染？",
+      "院内感染会带来哪些风险？",
+      "我能为预防院内感染做些什么？",
+      "我对院内感染没有疑问了，我想了解一下医护人员手卫生方面的知识"
+    ]; 
+    const q10x = [];
+    const q11 = "院内感染是指您在医院或其他医疗机构接受治疗期间，可能新得到的感染，这种感染并非因您原先的肺炎或其他治疗而产生。这些感染可能是由细菌、病毒或真菌等微生物引起的。";     
+    const q12 = "院内感染可能会使您的肺炎加重，导致您需要在医院多停留一段时间，增加医疗费用。更严重的是，院内感染有时可能引发其他的并发症，甚至在某些情况下，可能会有生命危险。因此，预防院内感染是非常重要的。"; 
+    const q13 = "您因肺炎住院，为了确保您的安全和健康，您也可以参与到“我来提醒医护人员洗手”活动中来。如果您观察到医护人员在五个关键时刻可能忘记了洗手，您可以友好地提醒他们。这样的小小提醒，对于预防院内感染的发生，有着十分重要的作用。"; 
+
+    
+    const q2 = "患者您好，您对医护人员手卫生有哪些具体的疑问？（您可以通过<b>点击</b>下面您感兴趣的问题向我提问）";
+    const q2b = "您对医护人员手卫生有哪些具体的疑问？（您可以通过<b>点击</b>下面您感兴趣的问题向我提问）";
+    const q2a = "您对医护人员手卫生还有哪些疑问？（您可以通过<b>点击</b>下面您感兴趣的问题向我提问）";
+    const q20 = [
+      "<a class=\"previous\" onclick=\"Answer(21)\" name=\"20\">为什么医护人员的手卫生如此关键？</a>",
+      "<a class=\"previous\" onclick=\"Answer(22)\" name=\"20\">医护人员应该何时洗手？</a>",
+      "<a class=\"previous\" onclick=\"Answer(10)\" name=\"20\">我对医护人员的手卫生没有疑问了，我想了解一下院内感染方面的知识</a>"
+    ];
+    const a20 = [
+      "为什么医护人员的手卫生如此关键？",
+      "医护人员应该何时洗手？"
+    ];      
+    const q20x = [];
+    const q21 = "因为许多感染的微生物都可能通过医护人员的手传播。如果医护人员经常清洁双手，可以大大降低这些微生物传播给肺炎患者的风险，从而保护您和其他患者的健康。"; 
+    
+    const q22 = "医护人员与您互动时有几个关键时刻需要特别注意洗手，以确保您的安全和健康：<br>" +
+                "1.接触患者前：例如医护人员在为您做心电图前；<br>" +
+                "2.进行操作前：例如医护人员为您插入静脉针头或更换输液瓶前；<br>" +
+                "3.操作或可能接触体液后：例如医护人员在为您采集血液样本后；<br>" +
+                "4.接触患者后：例如医护人员在为您做完心电图后；<br>" +
+                "5.接触患者周围环境后：例如医护人员在为您更换床单后。"; 
+
+    const qe = "（王东教授的在线小课堂结束了，请您回到问卷调查网页，继续作答）";
+
+    function AutoScroll() {
+      const out = document.getElementById("conversation")
+      out.scrollTop = out.scrollHeight - out.clientHeight
+    }
+
+    function GetLastMsgIndex() {
+      return $(".row.message-body" ).length - 1
+    }
+
+    function UpdateMsg(idx, msg) {
+      var msg_to_update = $( ".row.message-body:eq(0) .col-sm-12.message-main-receiver .receiver .message-text" );
+      if (idx > 0) {
+        msg_to_update = $( "#msg-"+idx+ " .col-sm-12.message-main-receiver .receiver .message-text" );
+      }
+      msg_to_update.html(msg);
+      AutoScroll();
+    }   
+    
+    function UpdateReply(idx, msg) {
+      var msg_to_update = $( ".row.message-body:eq(0) .col-sm-12.message-main-sender .sender .message-text" );
+      if (idx > 0) {
+        msg_to_update = $( "#msg-"+idx+ " .col-sm-12.message-main-sender .sender .message-text" );
+      }
+      msg_to_update.html(msg);
+      AutoScroll();
+    }   
+
+    function GetReadTime(msg) {
+      var tm = 5000;
+      tm = msg.length / 10 * 300;
+      return tm;    
+    } 
+
+
+    const MsgList = [];
+    var MsgDelay = 1000;
+    var ReadCount = 0;
+
+    function ShowNextMsg() {
+      if (MsgList.length > 0) {
+        var msg = MsgList[0];
+        //Type of Msg:
+        if (msg[0] == 1) {
+          AddMsg(msg[1], msg[2], msg[3]);
+          MsgList.shift();
+          return;
+        }
+        if (msg[0] == 2) {
+          AddReply(msg[1], msg[2], msg[3]);
+          MsgList.shift();
+          
+        }
+        if (msg[0]==3) {
+          AddEndInfo(msg[1], msg[2], msg[3]);
+          MsgList.shift();
+        }
+      }
+
+    }
+
+    function AddMsg(msg, wait, delay) {
+      if (wait>0) {
+        MsgDelay = delay;
+        setTimeout(function(){
+              var msg_to_add = msgdiv.clone();
+              // var msg_last = $( ".row.message-body:eq("+GetLastMsgIndex()+")" );
+              // msg_last.after(msg_to_add);
+              $("#conversation").append(msg_to_add);
+              AutoScroll(); 
+              if (MsgDelay>0) {
+                  setTimeout(function() {
+                    var newMsg = $( ".row.message-body:eq("+ GetLastMsgIndex() +")" );
+                    newMsg.attr( "ID", "msg-"+GetLastMsgIndex() );                    
+                    UpdateMsg(GetLastMsgIndex(), msg);
+                    AutoScroll(); 
+                    ShowNextMsg();
+                  }, MsgDelay);                
+              } else {
+                var newMsg = $( ".row.message-body:eq("+ GetLastMsgIndex() +")" );
+                newMsg.attr( "ID", "msg-"+GetLastMsgIndex() );                    
+                UpdateMsg(GetLastMsgIndex(), msg);
+                AutoScroll(); 
+                ShowNextMsg();
+              }
+          }, wait);
+          return;    
+      }
+      var msg_to_add = msgdiv.clone();
+      // var msg_last = $( ".row.message-body:eq("+GetLastMsgIndex()+")" );
+      // msg_last.after(msg_to_add);
+      $("#conversation").append(msg_to_add);
+      AutoScroll();  
+      if (delay>0) {
+        setTimeout(function() {
+                    var newMsg = $( ".row.message-body:eq("+ GetLastMsgIndex() +")" );
+                    newMsg.attr( "ID", "msg-"+GetLastMsgIndex() );                    
+                    UpdateMsg(GetLastMsgIndex(), msg);
+                    ShowNextMsg();
+                  }, delay);         
+      }
+
+    }
+
+    function AddReply(msg, wait, delay) {
+      if (wait>0) {
+        MsgDelay = delay;
+        setTimeout(function(){
+              var msg_to_add = msgdiv2.clone();
+              // var msg_last = $( ".row.message-body:eq("+GetLastMsgIndex()+")" );
+              // msg_last.after(msg_to_add);
+              $("#conversation").append(msg_to_add);
+              AutoScroll(); 
+              if (MsgDelay>0) {
+                  setTimeout(function() {
+                    var newMsg = $( ".row.message-body:eq("+ GetLastMsgIndex() +")" );
+                    newMsg.attr( "ID", "msg-"+GetLastMsgIndex() );                    
+                    UpdateReply(GetLastMsgIndex(), msg);
+                    AutoScroll();
+                    ShowNextMsg();
+                  }, MsgDelay);                
+              } else{
+                var newMsg = $( ".row.message-body:eq("+ GetLastMsgIndex() +")" );
+                newMsg.attr( "ID", "msg-"+GetLastMsgIndex() );                    
+                UpdateReply(GetLastMsgIndex(), msg);
+                AutoScroll();
+                ShowNextMsg();
+              }
+          }, wait);
+          return;    
+      }
+      var msg_to_add = msgdiv2.clone();
+      // var msg_last = $( ".row.message-body:eq("+GetLastMsgIndex()+")" );
+      // msg_last.after(msg_to_add);
+      $("#conversation").append(msg_to_add);
+      AutoScroll();  
+      if (delay>0) {
+        setTimeout(function() {
+                    var newMsg = $( ".row.message-body:eq("+ GetLastMsgIndex() +")" );
+                    newMsg.attr( "ID", "msg-"+GetLastMsgIndex() );                    
+                    UpdateReply(GetLastMsgIndex(), msg);
+                    ShowNextMsg();
+                  }, delay);         
+      }    
+    }  
+
+    function AddEndInfo(msg, wait, delay) {
+        if (wait>0) {
+          MsgDelay = delay;
+          setTimeout(function(){
+                var msg_to_add = enddiv.clone();
+                // var msg_last = $( ".row.message-body:eq("+GetLastMsgIndex()+")" );
+                // msg_last.after(msg_to_add);
+                $("#conversation").append(msg_to_add);
+                AutoScroll(); 
+                if (MsgDelay>0) {
+                    setTimeout(function() {
+                      // var newMsg = $( ".row.message-body:eq("+ GetLastMsgIndex() +")" );
+                      // newMsg.attr( "ID", "msg-"+GetLastMsgIndex() );                    
+                      // UpdateMsg(GetLastMsgIndex(), msg);
+                      $('#endinfo').html(msg);
+                      AutoScroll(); 
+                      ShowNextMsg();
+                    }, MsgDelay);                
+                } else {
+                  $('#endinfo').html(msg);
+                  ShowNextMsg(); 
+                }
+            }, wait);
+            return;    
+        }
+        var msg_to_add = enddiv.clone();
+        // var msg_last = $( ".row.message-body:eq("+GetLastMsgIndex()+")" );
+        // msg_last.after(msg_to_add);
+        $("#conversation").append(msg_to_add);
+        AutoScroll();  
+        if (delay>0) {
+          setTimeout(function() {
+                      $('#endinfo').html(msg);
+                      ShowNextMsg(); 
+                    }, delay);         
+        }
+    }
+    
+    function Answer(typ) {
+      if (typ==10) {
+        // window.history.back();
+        $(".row.message-body:eq("+GetLastMsgIndex()+") .col-sm-12.message-main-receiver .receiver .message-text a").attr("onclick", "");
+        MsgList.push([2, a00[3], 500, 1000]);
+        MsgList.push([1, q1b+'<br>'+q10[0]+'<br>'+q10[1]+'<br>'+q10[2], 500, 1000]);
+        q10.forEach((ele) => q10x.push(ele));
+        ShowNextMsg();
+      }      
+      if (typ==20) {
+        // window.history.back();
+        $(".row.message-body:eq("+GetLastMsgIndex()+") .col-sm-12.message-main-receiver .receiver .message-text a").attr("onclick", "");
+        MsgList.push([2, a00[2], 500, 1000]);
+        MsgList.push([1, q2b+'<br>'+q20[0]+'<br>'+q20[1], 500, 1000]);
+        q20.forEach((ele) => q20x.push(ele));
+        ShowNextMsg(); 
+      }      
+      if (typ==1) {
+        // window.history.back();
+        $(".row.message-body:eq("+GetLastMsgIndex()+") .col-sm-12.message-main-receiver .receiver .message-text a").attr("onclick", "");
+        MsgList.push([2, a00[0], 500, 1000]);
+        MsgList.push([1, q1+'<br>'+q10[0]+'<br>'+q10[1]+'<br>'+q10[2], 500, 1000]);
+        q10.forEach((ele) => q10x.push(ele));
+        ShowNextMsg();
+      }
+      if (typ==11) {
+        $(".row.message-body:eq("+GetLastMsgIndex()+") .col-sm-12.message-main-receiver .receiver .message-text a").attr("onclick", "");
+        MsgList.push([2, a10[0], 500, 1000]);
+        MsgList.push([1, q11, 500, 2000]);
+        var msgidx = q10x.indexOf(q10[0]);
+        if (msgidx >= 0) {
+          q10x.splice(msgidx, 1);
+          if (q10x.length > 1) {
+            var tmp = q10x.slice(0,-1);
+            MsgList.push([1, q1a+'<br>'+tmp.join('<br>'), GetReadTime(q11), 1000]);    
+          } else {
+            if (ReadCount == 0) {
+               MsgList.push([1, q1a+'<br>'+q10x.join('<br>'), GetReadTime(q11), 1000]);
+               ReadCount = 1;
+            } else {
+              MsgList.push([3, qe, GetReadTime(q11), 100]);
+            }           
+          }           
+        }
+        ShowNextMsg();
+      }  
+      if (typ==12) {
+        $(".row.message-body:eq("+GetLastMsgIndex()+") .col-sm-12.message-main-receiver .receiver .message-text a").attr("onclick", "");
+        MsgList.push([2, a10[1], 1000, 1000]);
+        MsgList.push([1, q12, 500, 2000]);
+        var msgidx = q10x.indexOf(q10[1]);
+        if (msgidx >= 0) {
+          q10x.splice(msgidx, 1);
+          if (q10x.length > 1) {
+            var tmp = q10x.slice(0,-1);
+            MsgList.push([1, q1a+'<br>'+tmp.join('<br>'), GetReadTime(q12), 1000]);   
+          } else {
+            if (ReadCount == 0) {
+               MsgList.push([1, q1a+'<br>'+q10x.join('<br>'), GetReadTime(q12), 1000]);
+               ReadCount = 1;
+            } else {
+              MsgList.push([3, qe, GetReadTime(q12), 100]);
+            }           
+          }           
+        }
+        ShowNextMsg();        
+      } 
+      if (typ==13) {
+        $(".row.message-body:eq("+GetLastMsgIndex()+") .col-sm-12.message-main-receiver .receiver .message-text a").attr("onclick", "");
+        MsgList.push([2, a10[2], 500, 1000]);
+        MsgList.push([1, q13, 500, 2000]);
+        
+        var msgidx = q10x.indexOf(q10[2]);
+        if (msgidx >= 0) {
+          q10x.splice(msgidx, 1);
+          if (q10x.length > 1) {
+            var tmp = q10x.slice(0,-1);
+            MsgList.push([1, q1a+'<br>'+tmp.join('<br>'), GetReadTime(q13), 1000]);   
+          } else {
+            if (ReadCount == 0) {
+              MsgList.push([1, q1a+'<br>'+q10x.join('<br>'), GetReadTime(q13), 1000]);
+              ReadCount = 1;
+            } else {
+              MsgList.push([3, qe, GetReadTime(q13), 100]);
+            }           
+          }           
+        }
+        ShowNextMsg();         
+      }  
+      
+      if (typ==2) {
+        // window.history.back();
+        $(".row.message-body:eq("+GetLastMsgIndex()+") .col-sm-12.message-main-receiver .receiver .message-text a").attr("onclick", "");
+        MsgList.push([2, a00[1], 500, 1000]);
+        MsgList.push([1, q2+'<br>'+q20[0]+'<br>'+q20[1], 500, 1000]);
+        q20.forEach((ele) => q20x.push(ele));
+        ShowNextMsg(); 
+      }
+      if (typ==21) {
+        $(".row.message-body:eq("+GetLastMsgIndex()+") .col-sm-12.message-main-receiver .receiver .message-text a").attr("onclick", "");
+        MsgList.push([2, a20[0], 500, 1000]);
+        MsgList.push([1, q21, 500, 2000]);
+        
+        var msgidx = q20x.indexOf(q20[0]);
+        if (msgidx >= 0) {
+          q20x.splice(msgidx, 1);
+          if (q20x.length > 1) {
+            var tmp = q20x.slice(0,-1);
+            MsgList.push([1, q2a+'<br>'+tmp.join('<br>'), GetReadTime(q21), 1000]);   
+          } else {
+            if (ReadCount == 0) {
+              MsgList.push([1, q2a+'<br>'+q20x.join('<br>'), GetReadTime(q21), 1000]);
+              ReadCount = 1;
+            } else {
+              MsgList.push([3, qe, GetReadTime(q21), 100]);
+            }           
+          }           
+        }
+        ShowNextMsg();         
+      }  
+      if (typ==22) {
+        $(".row.message-body:eq("+GetLastMsgIndex()+") .col-sm-12.message-main-receiver .receiver .message-text a").attr("onclick", "");
+        MsgList.push([2, a20[1], 500, 1000]);
+        MsgList.push([1, q22, 500, 2000]);
+        
+        var msgidx = q20x.indexOf(q20[1]);
+        if (msgidx >= 0) {
+          q20x.splice(msgidx, 1);
+          if (q20x.length > 1) {
+            var tmp = q20x.slice(0,-1);
+            MsgList.push([1, q2a+'<br>'+tmp.join('<br>'), GetReadTime(q22), 1000]);    
+          } else {
+            if (ReadCount == 0) {
+              MsgList.push([1, q2a+'<br>'+q20x.join('<br>'), GetReadTime(q22), 1000]);
+              ReadCount = 1;
+            } else {
+              MsgList.push([3, qe, GetReadTime(q22), 100]);
+            }           
+          }           
+        }
+        ShowNextMsg();        
+      }       
+    }
+
+    $( document ).ready(function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const typ = urlParams.get('typ');     
+        // $("#conversation").append(msgdiv.clone());
+        if (typ=="1") {
+            MsgList.push([1, q1+'<br>'+q10[0]+'<br>'+q10[1]+'<br>'+q10[2], 500, 1000]);
+            q10.forEach((ele) => q10x.push(ele));
+            ShowNextMsg();
+            return;
+        }
+        if (typ=="2") {
+            MsgList.push([1, q2+'<br>'+q20[0]+'<br>'+q20[1], 500, 1000]);
+            q20.forEach((ele) => q20x.push(ele));
+            ShowNextMsg();            
+            return;
+        }          
+            MsgList.push([1, q0, 500, 1000]);
+            MsgList.push([1, q00, 500, 1000]);
+            ShowNextMsg();                        
+    });   
+  </script> 
+</body>
+
+</html>
